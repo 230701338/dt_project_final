@@ -1,0 +1,59 @@
+import 'package:firebase_core/firebase_core.dart';
+import 'package:flutter/material.dart';
+import 'firebase_options.dart';
+import 'screens/login_screen.dart';
+import 'screens/blutooth_screen.dart';
+import 'home_screen.dart'; // ✅ Replace with your actual home screen
+import 'package:provider/provider.dart';
+import 'providers/cart_provider.dart';
+import 'services/bluetooth_service.dart';
+
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
+
+  runApp(
+    MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (context) => CartProvider()),
+        ChangeNotifierProvider(create: (context) => BluetoothService()),
+      ],
+      child: const MyApp(),
+    ),
+  );
+}
+
+class MyApp extends StatelessWidget {
+  const MyApp({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      debugShowCheckedModeBanner: false,
+      title: 'Grocery Haven',
+      theme: ThemeData(primarySwatch: Colors.green),
+      home: const AppEntryPoint(),
+    );
+  }
+}
+
+class AppEntryPoint extends StatelessWidget {
+  const AppEntryPoint({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Consumer<BluetoothService>(
+      builder: (context, bluetoothService, child) {
+        if (bluetoothService.isConnected) {
+          // If Bluetooth is connected, show the home screen (or login screen if that's the flow)
+          return const HomeScreen(); // Replace LoginScreen with HomeScreen based on your flow
+        } else {
+          // If Bluetooth is not connected, show the Bluetooth screen
+          return const BluetoothScreen();
+        }
+      },
+    );
+  }
+}

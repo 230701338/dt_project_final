@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <!-- Set the base path for your Flutter web app -->
+  <base href="$FLUTTER_BASE_HREF">
+
+  <meta charset="UTF-8">
+  <meta content="IE=Edge" http-equiv="X-UA-Compatible">
+  <meta name="description" content="A new Flutter project.">
+
+  <!-- iOS meta tags & icons -->
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  <meta name="apple-mobile-web-app-title" content="dt_project">
+  <link rel="apple-touch-icon" href="icons/Icon-192.png">
+
+  <!-- Favicon -->
+  <link rel="icon" type="image/png" href="favicon.png"/>
+
+  <title>dt_project</title>
+  <link rel="manifest" href="manifest.json">
+
+  <!-- Razorpay Web SDK -->
+  <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+
+  <!-- Razorpay custom function for Flutter Web -->
+  <script>
+    function openRazorpayWeb(amount) {
+      var options = {
+        "key": "YOUR_KEY_HERE", // Replace with your Razorpay key
+        "amount": amount,
+        "currency": "INR",
+        "name": "dt_project",
+        "description": "Test Transaction",
+        "handler": function (response) {
+          alert("Payment Successful: " + response.razorpay_payment_id);
+        },
+        "prefill": {
+          "name": "Your Name",
+          "email": "you@example.com",
+          "contact": "9999999999"
+        },
+        "theme": {
+          "color": "#3399cc"
+        }
+      };
+      var rzp1 = new Razorpay(options);
+      rzp1.open();
+    }
+  </script>
+</head>
+
+<body>
+  <script src="flutter_bootstrap.js" async></script>
+</body>
+</html>
