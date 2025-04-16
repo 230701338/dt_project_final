@@ -2,8 +2,6 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'firebase_options.dart';
 import 'screens/login_screen.dart';
-import 'screens/blutooth_screen.dart';
-import 'home_screen.dart'; // ✅ Replace with your actual home screen
 import 'package:provider/provider.dart';
 import 'providers/cart_provider.dart';
 import 'services/bluetooth_service.dart';
@@ -47,11 +45,24 @@ class AppEntryPoint extends StatelessWidget {
     return Consumer<BluetoothService>(
       builder: (context, bluetoothService, child) {
         if (bluetoothService.isConnected) {
-          // If Bluetooth is connected, show the home screen (or login screen if that's the flow)
-          return const HomeScreen(); // Replace LoginScreen with HomeScreen based on your flow
+          return const LoginScreen();
         } else {
-          // If Bluetooth is not connected, show the Bluetooth screen
-          return const BluetoothScreen();
+          return const Scaffold(
+            backgroundColor: Colors.black,
+            body: Center(
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  CircularProgressIndicator(color: Colors.white),
+                  SizedBox(height: 16),
+                  Text(
+                    'Connecting to HC-06...',
+                    style: TextStyle(color: Colors.white),
+                  ),
+                ],
+              ),
+            ),
+          );
         }
       },
     );
